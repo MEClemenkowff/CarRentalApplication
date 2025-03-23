@@ -13,14 +13,19 @@ struct VehicleListView: View {
     //@EnvironmentObject var rideViewModel: RideViewModel
     @State private var vehicles: [Vehicle] = []
     @State private var selectedVehicle: Vehicle?
+    
+    func isAvailable(vehicle: Vehicle) -> Bool {
+        //!rideViewModel.isVehicleBooked(vehicleID: vehicle.id!, date: Date())
+        true
+    }
 
     var body: some View {
         List(vehicleViewModel.vehicles) { vehicle in
             HStack {
-                /*Circle()
-                    .fill(rideViewModel.isVehicleBooked(vehicleID: vehicle.id!, date: Date()) ? .red : .green)
+                Circle()
+                    .fill(isAvailable(vehicle: vehicle) ? .green : .red)
                     .frame(width: 10, height: 10)
-                    .help(Text(rideViewModel.isVehicleBooked(vehicleID: vehicle.id!, date: Date()) ? "Rented" : "Available"))*/
+                    .help(Text(isAvailable(vehicle: vehicle) ? "Available" : "Rented"))
                 
                 Text("\(vehicle.make) \(vehicle.model) (\(formattedYear(vehicle.year)))")
                     .font(.headline)
@@ -36,9 +41,23 @@ struct VehicleListView: View {
                 Text("Mileage: \(vehicle.odometer) km")
                     .font(.subheadline)
                     .frame(maxWidth: .infinity, alignment: .leading)
-            }.onTapGesture {
+                
+                Menu {
+                    Button("Edit") {
+                        selectedVehicle = vehicle
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.title2)
+                        .foregroundColor(.primary)
+                        .padding(10)
+                        .clipShape(Circle())
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(PlainButtonStyle())
+            }/*.onTapGesture {
                 selectedVehicle = vehicle
-            }
+            }*/
             .padding()
         }
         .sheet(item: $selectedVehicle) { vehicle in

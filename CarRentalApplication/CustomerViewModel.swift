@@ -124,4 +124,24 @@ class CustomerViewModel: ObservableObject {
         }
         task.resume()
     }
+    
+    func deleteCustomer(id: Int) {
+        let url = URL(string: "\(baseURL)\(id)/")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error making DELETE request: \(error)")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                // Remove the deleted customer from the local list
+                self.customers.removeAll { $0.id == id }
+            }
+        }
+        task.resume()
+    }
 }

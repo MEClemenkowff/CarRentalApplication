@@ -27,9 +27,27 @@ struct CustomerListView: View {
                 Text(customer.phone)
                     .font(.subheadline)
                     .frame(maxWidth: .infinity, alignment: .leading)
-            }.onTapGesture {
+                
+                Menu {
+                    Button("Edit") {
+                        selectedCustomer = customer
+                    }
+                    Button("Delete", role: .destructive) {
+                        customerViewModel.deleteCustomer(id: customer.id!)
+                        customerViewModel.fetchCustomers()
+                    }
+                } label: {
+                    Image(systemName: "ellipsis")
+                        .font(.title2)
+                        .foregroundColor(.primary)
+                        .padding(10)
+                        .clipShape(Circle())
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(PlainButtonStyle())
+            }/*.onTapGesture {
                 selectedCustomer = customer
-            }
+            }*/
             .padding()
         }
         .sheet(item: $selectedCustomer) { customer in
