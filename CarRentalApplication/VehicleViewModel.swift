@@ -14,6 +14,7 @@ struct Vehicle: Identifiable, Codable, Hashable {
     var year: Int
     var registration: String
     var seats: Int
+    var odometer: Int
 }
 
 class VehicleViewModel: ObservableObject {
@@ -62,7 +63,7 @@ class VehicleViewModel: ObservableObject {
                 "model": model,
                 "year": year,
                 "registration": registration,
-                "seats": seats
+                "seats": seats,
         ]
         
         // Encode the vehicle data as JSON
@@ -97,10 +98,10 @@ class VehicleViewModel: ObservableObject {
         task.resume()
     }
     
-    func updateVehicle(id: Int, make: String, model: String, year: Int, registration: String, seats: Int) {
+    func updateVehicle(id: Int, make: String, model: String, year: Int, registration: String, seats: Int, odometer: Int) {
         let url = URL(string: "\(baseURL)\(id)/")!
         
-        let updatedVehicle = Vehicle(id: id, make: make, model: model, year: year, registration: registration, seats: seats)
+        let updatedVehicle = Vehicle(id: id, make: make, model: model, year: year, registration: registration, seats: seats, odometer: odometer)
         
         guard let jsonData = try? JSONEncoder().encode(updatedVehicle) else {
             print("Error encoding vehicle data")

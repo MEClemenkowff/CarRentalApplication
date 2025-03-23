@@ -32,9 +32,9 @@ struct CustomerListView: View {
             }
             .padding()
         }
-        /*.sheet(item: $selectedCustomer) { customer in
+        .sheet(item: $selectedCustomer) { customer in
             CustomerFormView(viewModel: customerViewModel, customer: customer)
-        }*/
+        }
         .onAppear {
             customerViewModel.fetchCustomers()
         }

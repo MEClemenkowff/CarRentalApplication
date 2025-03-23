@@ -29,14 +29,21 @@ struct VehicleListView: View {
                 Text(vehicle.registration)
                     .font(.subheadline)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                
+                Text("Seats: \(vehicle.seats)")
+                    .font(.subheadline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                Text("Mileage: \(vehicle.odometer) km")
+                    .font(.subheadline)
+                    .frame(maxWidth: .infinity, alignment: .leading)
             }.onTapGesture {
                 selectedVehicle = vehicle
             }
             .padding()
         }
-        /*.sheet(item: $selectedVehicle) { vehicle in
+        .sheet(item: $selectedVehicle) { vehicle in
             VehicleFormView(viewModel: vehicleViewModel, vehicle: vehicle)
-        }*/
+        }
         .onAppear {
             vehicleViewModel.fetchVehicles()
             //rideViewModel.fetchRides()

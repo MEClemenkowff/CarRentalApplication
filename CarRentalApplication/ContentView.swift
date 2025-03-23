@@ -41,7 +41,9 @@ struct ContentView: View {
             .navigationTitle("Sidebar")
         } detail: {
             ContentUnavailableView("", systemImage: "car.2.fill")
-        }/*.sheet(isPresented: $appState.shouldPresentCustomerSheet) {
+        }.toolbar {
+            ToolbarView()
+        }.sheet(isPresented: $appState.shouldPresentCustomerSheet) {
             
         } content: {
             CustomerFormView(viewModel: customerViewModel).frame(minWidth:400)
@@ -50,7 +52,7 @@ struct ContentView: View {
         } content: {
             VehicleFormView(viewModel: vehicleViewModel).frame(minWidth:400)
         }
-        .sheet(isPresented: $appState.shouldPresentRideSheet) {
+        /*.sheet(isPresented: $appState.shouldPresentRideSheet) {
             
         } content: {
             RideFormView(rideViewModel: rideViewModel, customerViewModel: customerViewModel, vehicleViewModel: vehicleViewModel).frame(minWidth:400)
