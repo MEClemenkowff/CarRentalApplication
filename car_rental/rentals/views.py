@@ -111,3 +111,33 @@ class RidesView(BaseView):
     
     def get_serializer_class(self):
         return RideSerializer
+
+    def patch(self, request, pk=None):
+        if not pk:
+            return Response({"detail": "PK is required for PATCH requests."}, status=status.HTTP_400_BAD_REQUEST)
+
+        obj = self.get_object(self.get_model(), pk)
+        if obj is None:
+            return Response({"detail": "Not found."}, status=status.HTTP_404_NOT_FOUND)
+
+        status = request.data.get('status', obj.status)
+        odometer_start = request.data.get('odometer_start', obj.odometer_start)
+        odometer_end = request.data.get('odometer_end', obj.odometer_end)
+        vehicle = obj.vehicle
+
+        # Update vehicle mileage
+        if vehicle and odometer_start is not None and odometer_end is not None:
+            if obj.status != 'completed' and status == 'completed':
+                new_mileage = odometer_end - odometer_start
+            elif obj.status == 'completed' and status == 'completed':
+                old_ride_mileage = obj.odometer_end - obj.odometer_start
+                new_mileage = odometer_end - odometer_start - old_ride_mileage
+            vehicle.odometer = vehicle.odometer + new_mileage
+            vehicle.save()
+
+
+        serializer = self.get_serializer_class()(obj, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

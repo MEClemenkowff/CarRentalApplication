@@ -22,8 +22,8 @@ class Vehicle(models.Model):
     year = models.IntegerField()
     registration = models.CharField(max_length=50, unique=True)
     seats = models.IntegerField()
-    fuel = models.CharField(max_length=50, choices=FUEL_TYPES)
-    available = models.BooleanField(default=True)
+    fuel = models.CharField(max_length=50, choices=FUEL_TYPES, default='gasoline')
+    active = models.BooleanField(default=True)
     odometer = models.IntegerField(default=0)
 
     def __str__(self):
@@ -31,10 +31,10 @@ class Vehicle(models.Model):
     
 class Ride(models.Model):
     STATUS_CHOICES = [
-        ('pending', 'Pending'),
+        #('pending', 'Pending'),
         ('active', 'Active'),
         ('completed', 'Completed'),
-        ('cancelled', 'Cancelled'),
+        #('cancelled', 'Cancelled'),
     ]
 
     vehicle = models.ForeignKey(Vehicle, on_delete=models.PROTECT)
@@ -43,7 +43,7 @@ class Ride(models.Model):
     end_date = models.DateField()
     odometer_start = models.IntegerField(null=True, blank=True)
     odometer_end = models.IntegerField(null=True, blank=True)
-    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='pending')
+    status = models.CharField(max_length=50, choices=STATUS_CHOICES, default='active')
 
     def __str__(self):
         return f"Ride {self.id}: {self.vehicle} for {self.customer}"
