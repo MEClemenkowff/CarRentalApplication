@@ -10,4 +10,6 @@ urlpatterns = [
 
     path('rides/', views.RidesView.as_view(), name='rides'),
     path('rides/<int:pk>/', views.RidesView.as_view(), name='ride'),
+
+    path('availability/', views.check_availability, name='availability'),
 ]

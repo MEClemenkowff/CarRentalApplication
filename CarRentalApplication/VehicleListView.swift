@@ -10,23 +10,29 @@ import SwiftUI
 struct VehicleListView: View {
     @EnvironmentObject var customerViewModel: CustomerViewModel
     @EnvironmentObject var vehicleViewModel: VehicleViewModel
-    //@EnvironmentObject var rideViewModel: RideViewModel
+    @EnvironmentObject var rideViewModel: RideViewModel
     @State private var vehicles: [Vehicle] = []
     @State private var selectedVehicle: Vehicle?
+    @State private var vehicleAvailability: [Int: Bool] = [:]
     
-    func isAvailable(vehicle: Vehicle) -> Bool {
-        //!rideViewModel.isVehicleBooked(vehicleID: vehicle.id!, date: Date())
-        true
+    func isAvailable(vehicle: Vehicle, completion: @escaping (Bool) -> Void) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let dateString = dateFormatter.string(from: Date())
+        
+        rideViewModel.isVehicleAvailable(vehicleID: vehicle.id!, startDate: dateString, endDate: dateString) { isAvailable in
+            completion(isAvailable)
+        }
     }
 
     var body: some View {
         List(vehicleViewModel.vehicles) { vehicle in
             HStack {
                 Circle()
-                    .fill(isAvailable(vehicle: vehicle) ? .green : .red)
+                    .fill(self.vehicleAvailability[vehicle.id!] ?? false ? .green : .red)
                     .frame(width: 10, height: 10)
-                    .help(Text(isAvailable(vehicle: vehicle) ? "Available" : "Rented"))
-                
+                    .help(Text(self.vehicleAvailability[vehicle.id!] ?? false ? "Available" : "Rented"))
+                                
                 Text("\(vehicle.make) \(vehicle.model) (\(formattedYear(vehicle.year)))")
                     .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -58,6 +64,16 @@ struct VehicleListView: View {
             }/*.onTapGesture {
                 selectedVehicle = vehicle
             }*/
+            .onAppear {
+                isAvailable(vehicle: vehicle) { isAvailable in
+                    self.vehicleAvailability[vehicle.id!] = isAvailable
+                }
+            }
+            .onReceive(Timer.publish(every: 2, on: .main, in: .common).autoconnect()) { _ in
+                isAvailable(vehicle: vehicle) { isAvailable in
+                    self.vehicleAvailability[vehicle.id!] = isAvailable
+                }
+            }
             .padding()
         }
         .sheet(item: $selectedVehicle) { vehicle in
@@ -65,7 +81,10 @@ struct VehicleListView: View {
         }
         .onAppear {
             vehicleViewModel.fetchVehicles()
-            //rideViewModel.fetchRides()
+        }
+        .onReceive(Timer.publish(every: 2, on: .main, in: .common).autoconnect()) { _ in
+            vehicleViewModel.fetchVehicles()
+            rideViewModel.fetchRides()
         }
     }
 }

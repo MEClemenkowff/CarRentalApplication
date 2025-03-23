@@ -98,7 +98,11 @@ class CustomerViewModel: ObservableObject {
     func updateCustomer(id: Int, first_name: String, last_name: String, email: String, phone: String) {
         let url = URL(string: "\(baseURL)\(id)/")!
         
-        let updatedCustomer = Customer(id: id, first_name: first_name, last_name: last_name, email: email, phone: phone)
+        let updatedCustomer = Customer(id: id, 
+                                       first_name: first_name,
+                                       last_name: last_name,
+                                       email: email,
+                                       phone: phone)
         
         guard let jsonData = try? JSONEncoder().encode(updatedCustomer) else {
             print("Error encoding customer data")

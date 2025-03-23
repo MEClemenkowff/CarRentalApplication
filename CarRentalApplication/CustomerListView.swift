@@ -8,10 +8,13 @@
 import SwiftUI
 
 struct CustomerListView: View {
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var customerViewModel: CustomerViewModel
     @EnvironmentObject var vehicleViewModel: VehicleViewModel
     //@EnvironmentObject var rideViewModel: RideViewModel
     @State private var selectedCustomer: Customer?
+    @State private var showDeleteConfirmation = false
+    @State private var customerToDelete: Customer?
 
     var body: some View {
         List(customerViewModel.customers) { customer in
@@ -33,8 +36,8 @@ struct CustomerListView: View {
                         selectedCustomer = customer
                     }
                     Button("Delete", role: .destructive) {
-                        customerViewModel.deleteCustomer(id: customer.id!)
-                        customerViewModel.fetchCustomers()
+                        customerToDelete = customer
+                        showDeleteConfirmation = true
                     }
                 } label: {
                     Image(systemName: "ellipsis")
@@ -45,6 +48,15 @@ struct CustomerListView: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(PlainButtonStyle())
+                .confirmationDialog("Are you sure you want to delete this customer?", isPresented: $showDeleteConfirmation, titleVisibility: .visible) {
+                    Button("Delete", role: .destructive) {
+                        if let customer = customerToDelete {
+                            customerViewModel.deleteCustomer(id: customer.id!)
+                            customerViewModel.fetchCustomers()
+                        }
+                    }
+                    Button("Cancel", role: .cancel) { }
+                }
             }/*.onTapGesture {
                 selectedCustomer = customer
             }*/

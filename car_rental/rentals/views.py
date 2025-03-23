@@ -1,6 +1,8 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from rest_framework import status
+from django.utils.dateparse import parse_date
 
 from rentals.models import Customer, Vehicle, Ride
 from rentals.serializers import CustomerSerializer, VehicleSerializer, RideSerializer
@@ -141,3 +143,33 @@ class RidesView(BaseView):
             serializer.save()
             return Response(serializer.data)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(["GET"])
+def check_availability(request):
+    vehicle = request.GET.get('vehicle')
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    excluded_ride = request.GET.get('excluded_ride')
+
+    if not vehicle or not start_date or not end_date:
+        return Response({"error": "Missing parameters"}, status=status.HTTP_400_BAD_REQUEST)
+
+    start_date = parse_date(start_date)
+    end_date = parse_date(end_date)
+
+    if not start_date or not end_date:
+        return Response({"error": "Invalid date format"}, status=status.HTTP_400_BAD_REQUEST)
+
+    conflicting_rides = Ride.objects.filter(
+        vehicle=vehicle,
+        start_date__lte=end_date,
+        end_date__gte=start_date
+    )
+
+    if excluded_ride:
+        conflicting_rides = conflicting_rides.exclude(id=excluded_ride)
+
+    is_available = not conflicting_rides.exists()
+
+    return Response({"available": is_available})
+    

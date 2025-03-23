@@ -11,12 +11,12 @@ struct ContentView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var customerViewModel: CustomerViewModel
     @EnvironmentObject var vehicleViewModel: VehicleViewModel
-    //@EnvironmentObject var rideViewModel: RideViewModel
+    @EnvironmentObject var rideViewModel: RideViewModel
     
     var body: some View {
         NavigationSplitView {
             List {
-                /*NavigationLink(destination: CalendarView()) {
+                /*NavigationLink(destination: RideCalendarView()) {
                     HStack {
                         Image(systemName: "calendar")
                             .frame(width: 24)
@@ -38,7 +38,7 @@ struct ContentView: View {
                     }
                 }
             }
-            .navigationTitle("Sidebar")
+            .navigationTitle("Sidebar").frame(minWidth:200)
         } detail: {
             ContentUnavailableView("", systemImage: "car.2.fill")
         }.toolbar {
@@ -52,11 +52,11 @@ struct ContentView: View {
         } content: {
             VehicleFormView(viewModel: vehicleViewModel).frame(minWidth:400)
         }
-        /*.sheet(isPresented: $appState.shouldPresentRideSheet) {
+        .sheet(isPresented: $appState.shouldPresentRideSheet) {
             
         } content: {
             RideFormView(rideViewModel: rideViewModel, customerViewModel: customerViewModel, vehicleViewModel: vehicleViewModel).frame(minWidth:400)
-        }*/
+        }
     }
 }
 

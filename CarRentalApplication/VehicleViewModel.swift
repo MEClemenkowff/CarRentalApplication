@@ -101,7 +101,13 @@ class VehicleViewModel: ObservableObject {
     func updateVehicle(id: Int, make: String, model: String, year: Int, registration: String, seats: Int, odometer: Int) {
         let url = URL(string: "\(baseURL)\(id)/")!
         
-        let updatedVehicle = Vehicle(id: id, make: make, model: model, year: year, registration: registration, seats: seats, odometer: odometer)
+        let updatedVehicle = Vehicle(id: id, 
+                                     make: make,
+                                     model: model,
+                                     year: year,
+                                     registration: registration,
+                                     seats: seats,
+                                     odometer: odometer)
         
         guard let jsonData = try? JSONEncoder().encode(updatedVehicle) else {
             print("Error encoding vehicle data")
