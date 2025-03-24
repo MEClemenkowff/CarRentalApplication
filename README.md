@@ -9,6 +9,14 @@
 
 ## Installation
 
+Clone the repository or download and unpack the ZIP archive
+
+```
+git clone https://github.com/MEClemenkowff/CarRentalApplication.git
+```
+
+### Setting up the Python environment
+
 Inside the project directory, open a command line and setup the virtual environment and install dependencies:
 
 ```
@@ -18,7 +26,14 @@ env\Scripts\activate  # Windows
 pip install -r requirements.txt
 ```
 
-Then make and apply migrations:
+#### Using MySQL
+
+When using the application with a MySQL database, make sure you can install `mysqlclient` ([https://pypi.org/project/mysqlclient/](https://pypi.org/project/mysqlclient/)), otherwise feel free to comment it out of `requirements.txt`.
+
+### Setting up the database
+
+By default the application works with an auto-generated SQLite database. When using a MySQL or any other Django-compatible database change the `DATABASES` section in `car_rental/car_rental/settings.py`. After your database is set up, make and apply migrations:
+
 
 ```
 cd car_rental
@@ -26,8 +41,12 @@ python manage.py makemigrations rentals
 python manage.py migrate
 ```
 
-And run the server:
+### Run the server
 
 ```
 python manage.py runserver
 ```
+
+### Building the Swift application
+
+Open the `CarRentalApplication.xcodeproj` in XCode and build the executable. Then simply run the executable.
