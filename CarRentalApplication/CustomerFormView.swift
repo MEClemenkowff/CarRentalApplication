@@ -18,17 +18,6 @@ struct CustomerFormView: View {
     @State private var email: String = ""
     @State private var phone: String = ""
     
-    init(viewModel: CustomerViewModel, customer: Customer? = nil) {
-        self.viewModel = viewModel
-        self.customer = customer
-        
-        // Initialize state variables with customer data if editing
-        _first_name = State(initialValue: customer?.first_name ?? "")
-        _last_name = State(initialValue: customer?.last_name ?? "")
-        _email = State(initialValue: customer?.email ?? "")
-        _phone = State(initialValue: customer?.phone ?? "")
-    }
-    
     var isFormValid: Bool {
         !first_name.isEmpty && !last_name.isEmpty && !email.isEmpty && !phone.isEmpty
     }
@@ -51,13 +40,24 @@ struct CustomerFormView: View {
                     }
                     dismiss()
                 } label: {
-                    Text("Submit")
+                    Text("Save")
                 }.disabled(!isFormValid)
                 Button {
                     dismiss()
                 } label: {
                     Text("Cancel")
                 }
+            }
+        }
+        .onAppear {
+            viewModel.fetchCustomers()
+            
+            // If editing, set initial values
+            if let customer = customer {
+                first_name = customer.first_name
+                last_name = customer.last_name
+                email = customer.email
+                phone = customer.phone
             }
         }.padding()
     }

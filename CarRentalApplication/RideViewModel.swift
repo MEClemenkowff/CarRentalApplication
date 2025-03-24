@@ -29,10 +29,10 @@ enum RideStatus: String, CaseIterable, Identifiable, Codable {
     }
 }
 
-struct Ride: Identifiable, Codable {
+struct Ride: Identifiable, Codable, Hashable {
     var id: Int?
     var vehicle: Int
-    var customer: Int
+    var customer: Int?
     var start_date: String
     var end_date: String
     var odometer_start: Int?
@@ -114,7 +114,6 @@ class RideViewModel: ObservableObject {
                         return
                     }
                     
-                    // Optionally, parse the response here to confirm success
                     if let data = data {
                         do {
                             // Attempt to decode the response, e.g., to get the new ride ID
@@ -122,9 +121,10 @@ class RideViewModel: ObservableObject {
                             let createdRide = try decoder.decode(Ride.self, from: data)
                             print("Created Ride: \(createdRide)")
                             
-                            // Optionally, update the local list of rides
+                            // Update the local list of rides
                             DispatchQueue.main.async {
                                 self.rides.append(createdRide)
+                                self.fetchRides()
                             }
                         } catch {
                             print("Error decoding response: \(error)")
@@ -179,6 +179,39 @@ class RideViewModel: ObservableObject {
                 print("The vehicle is not available.")
             }
         }
+    }
+    
+    func completeRide(id: Int, vehicle: Int, customer: Int, start_date: String, end_date: String, odometer_start: Int? = nil, odometer_end: Int? = nil) {
+        let url = URL(string: "\(baseURL)\(id)/")!
+
+        let updatedRide = Ride(id: id, vehicle: vehicle, customer: customer, start_date: start_date, end_date: end_date, odometer_start: odometer_start, odometer_end: odometer_end, status: RideStatus.completed)
+        
+        // Encode the updated ride data as JSON
+        guard let jsonData = try? JSONEncoder().encode(updatedRide) else {
+            print("Error encoding ride data")
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "PATCH"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.httpBody = jsonData
+        
+        // Perform the PUT request using URLSession
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error making PUT request: \(error)")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                // Update the local rides list after the PUT request
+                if let index = self.rides.firstIndex(where: { $0.id == id }) {
+                    self.rides[index] = updatedRide
+                }
+            }
+        }
+        task.resume()
     }
 
     func isVehicleAvailable(vehicleID: Int, startDate: String, endDate: String, excludingRideID excludedRideID: Int? = nil, completion: @escaping (Bool) -> Void) {
@@ -247,6 +280,26 @@ class RideViewModel: ObservableObject {
         
         task.resume()
     }
+    
+    func deleteRide(id: Int) {
+        let url = URL(string: "\(baseURL)\(id)/")!
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        
+        let task = URLSession.shared.dataTask(with: request) { data, response, error in
+            if let error = error {
+                print("Error making DELETE request: \(error)")
+                return
+            }
+            
+            DispatchQueue.main.async {
+                // Remove the deleted customer from the local list
+                self.rides.removeAll { $0.id == id }
+            }
+        }
+        task.resume()
+    }
 
     func getRide(for vehicleID: Int, on date: Date) -> Ride? {
         let dateFormatter = DateFormatter()
@@ -260,6 +313,5 @@ class RideViewModel: ObservableObject {
             ride.end_date >= dateString
         }
     }
-
 
 }

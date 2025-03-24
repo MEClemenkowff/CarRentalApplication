@@ -22,7 +22,7 @@ var yearFormatter: NumberFormatter {
 func formatDate(_ date: Date) -> String {
     let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd"
-    //formatter.timeZone = TimeZone(secondsFromGMT: 0)
+    formatter.timeZone = TimeZone(secondsFromGMT: 2*60*60)
     return formatter.string(from: date)
 }
 

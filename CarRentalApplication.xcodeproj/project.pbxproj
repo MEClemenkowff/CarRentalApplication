@@ -11,6 +11,7 @@
 		1005F5F32D902DD7000A485E /* VehicleFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005F5F22D902DD7000A485E /* VehicleFormView.swift */; };
 		1005F5F52D903195000A485E /* ToolbarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1005F5F42D903195000A485E /* ToolbarView.swift */; };
 		1077E9162D903B6C00D86980 /* RideCalendarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1077E9152D903B6C00D86980 /* RideCalendarView.swift */; };
+		107A934A2D9061D600A21874 /* RideListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 107A93492D9061D600A21874 /* RideListView.swift */; };
 		1098D4372D904AA600B64E07 /* RideViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1098D4362D904AA600B64E07 /* RideViewModel.swift */; };
 		1098D4392D90561000B64E07 /* RideFormView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1098D4382D90561000B64E07 /* RideFormView.swift */; };
 		1098E8E62D9028C000B9E3CD /* CarRentalApplicationApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1098E8E52D9028C000B9E3CD /* CarRentalApplicationApp.swift */; };
@@ -21,6 +22,7 @@
 		10E8B8402D902995007F4C10 /* VehicleViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E8B83F2D902995007F4C10 /* VehicleViewModel.swift */; };
 		10E8B8422D902A13007F4C10 /* CustomerListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E8B8412D902A13007F4C10 /* CustomerListView.swift */; };
 		10E8B8442D902A41007F4C10 /* VehicleListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10E8B8432D902A41007F4C10 /* VehicleListView.swift */; };
+		10EC58912D907D3700291EC3 /* RideHistoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10EC58902D907D3700291EC3 /* RideHistoryListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,7 @@
 		1005F5F22D902DD7000A485E /* VehicleFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleFormView.swift; sourceTree = "<group>"; };
 		1005F5F42D903195000A485E /* ToolbarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarView.swift; sourceTree = "<group>"; };
 		1077E9152D903B6C00D86980 /* RideCalendarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideCalendarView.swift; sourceTree = "<group>"; };
+		107A93492D9061D600A21874 /* RideListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideListView.swift; sourceTree = "<group>"; };
 		1098D4362D904AA600B64E07 /* RideViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideViewModel.swift; sourceTree = "<group>"; };
 		1098D4382D90561000B64E07 /* RideFormView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RideFormView.swift; sourceTree = "<group>"; };
 		1098E8E22D9028C000B9E3CD /* CarRentalApplication.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarRentalApplication.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -40,6 +43,7 @@
 		10E8B83F2D902995007F4C10 /* VehicleViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleViewModel.swift; sourceTree = "<group>"; };
 		10E8B8412D902A13007F4C10 /* CustomerListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomerListView.swift; sourceTree = "<group>"; };
 		10E8B8432D902A41007F4C10 /* VehicleListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VehicleListView.swift; sourceTree = "<group>"; };
+		10EC58902D907D3700291EC3 /* RideHistoryListView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RideHistoryListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,17 +77,19 @@
 			isa = PBXGroup;
 			children = (
 				1098E8E52D9028C000B9E3CD /* CarRentalApplicationApp.swift */,
-				10E8B83F2D902995007F4C10 /* VehicleViewModel.swift */,
-				10E8B83D2D902957007F4C10 /* CustomerViewModel.swift */,
-				1077E9152D903B6C00D86980 /* RideCalendarView.swift */,
-				1098D4382D90561000B64E07 /* RideFormView.swift */,
 				1098E8E72D9028C000B9E3CD /* ContentView.swift */,
 				1005F5F42D903195000A485E /* ToolbarView.swift */,
-				10E8B8432D902A41007F4C10 /* VehicleListView.swift */,
+				10E8B83D2D902957007F4C10 /* CustomerViewModel.swift */,
 				1005F5F02D902D3F000A485E /* CustomerFormView.swift */,
 				10E8B8412D902A13007F4C10 /* CustomerListView.swift */,
-				1005F5F22D902DD7000A485E /* VehicleFormView.swift */,
 				1098D4362D904AA600B64E07 /* RideViewModel.swift */,
+				1098D4382D90561000B64E07 /* RideFormView.swift */,
+				107A93492D9061D600A21874 /* RideListView.swift */,
+				10EC58902D907D3700291EC3 /* RideHistoryListView.swift */,
+				1077E9152D903B6C00D86980 /* RideCalendarView.swift */,
+				10E8B83F2D902995007F4C10 /* VehicleViewModel.swift */,
+				10E8B8432D902A41007F4C10 /* VehicleListView.swift */,
+				1005F5F22D902DD7000A485E /* VehicleFormView.swift */,
 				1098E8E92D9028C000B9E3CD /* Assets.xcassets */,
 				1098E8EE2D9028C000B9E3CD /* CarRentalApplication.entitlements */,
 				1098E8EB2D9028C000B9E3CD /* Preview Content */,
@@ -176,7 +182,9 @@
 				1098E8E62D9028C000B9E3CD /* CarRentalApplicationApp.swift in Sources */,
 				1077E9162D903B6C00D86980 /* RideCalendarView.swift in Sources */,
 				10E8B83E2D902957007F4C10 /* CustomerViewModel.swift in Sources */,
+				10EC58912D907D3700291EC3 /* RideHistoryListView.swift in Sources */,
 				10E8B8422D902A13007F4C10 /* CustomerListView.swift in Sources */,
+				107A934A2D9061D600A21874 /* RideListView.swift in Sources */,
 				10E8B8442D902A41007F4C10 /* VehicleListView.swift in Sources */,
 				1005F5F12D902D3F000A485E /* CustomerFormView.swift in Sources */,
 				1098D4372D904AA600B64E07 /* RideViewModel.swift in Sources */,

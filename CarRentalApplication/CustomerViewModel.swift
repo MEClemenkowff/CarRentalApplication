@@ -87,6 +87,11 @@ class CustomerViewModel: ObservableObject {
                     let decoder = JSONDecoder()
                     let createdCustomer = try decoder.decode(Customer.self, from: data)
                     print("Created Customer: \(createdCustomer)")
+                    
+                    // Update the local list of customers
+                    DispatchQueue.main.async {
+                        self.customers.append(createdCustomer)
+                    }
                 } catch {
                     print("Error decoding response: \(error)")
                 }

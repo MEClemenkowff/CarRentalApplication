@@ -90,6 +90,11 @@ class VehicleViewModel: ObservableObject {
                     let decoder = JSONDecoder()
                     let createdVehicle = try decoder.decode(Vehicle.self, from: data)
                     print("Created Vehicle: \(createdVehicle)")
+                    
+                    // Update the local list of vehicles
+                    DispatchQueue.main.async {
+                        self.vehicles.append(createdVehicle)
+                    }
                 } catch {
                     print("Error decoding response: \(error)")
                 }

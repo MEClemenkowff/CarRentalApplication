@@ -172,4 +172,3 @@ def check_availability(request):
     is_available = not conflicting_rides.exists()
 
     return Response({"available": is_available})
-    

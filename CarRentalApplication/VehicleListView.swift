@@ -8,12 +8,26 @@
 import SwiftUI
 
 struct VehicleListView: View {
+    
+    enum SheetType: Identifiable, Hashable {
+        case newVehicle
+        case editVehicle(Vehicle)
+        case newRide(Vehicle)
+
+        var id: Int {
+            hashValue
+        }
+    }
+    
+    @EnvironmentObject var appState: AppState
     @EnvironmentObject var customerViewModel: CustomerViewModel
     @EnvironmentObject var vehicleViewModel: VehicleViewModel
     @EnvironmentObject var rideViewModel: RideViewModel
     @State private var vehicles: [Vehicle] = []
     @State private var selectedVehicle: Vehicle?
     @State private var vehicleAvailability: [Int: Bool] = [:]
+    
+    @State private var sheetType: SheetType?
     
     func isAvailable(vehicle: Vehicle, completion: @escaping (Bool) -> Void) {
         let dateFormatter = DateFormatter()
@@ -26,6 +40,21 @@ struct VehicleListView: View {
     }
 
     var body: some View {
+        HStack {
+            Button() {
+                sheetType = .newVehicle
+            } label: {
+                Image(systemName: "plus")
+            }
+            .help(Text("Add new vehicle"))
+            .buttonStyle(.plain)
+            .padding(10)
+            .clipShape(Circle())
+            .contentShape(Rectangle())
+            
+            Spacer()
+        }
+        
         List(vehicleViewModel.vehicles) { vehicle in
             HStack {
                 Circle()
@@ -38,12 +67,13 @@ struct VehicleListView: View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text(vehicle.registration)
-                    .font(.subheadline)
+                    .font(.headline)
                     .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Text("Seats: \(vehicle.seats)")
                     .font(.subheadline)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                
                 Text("Mileage: \(vehicle.odometer) km")
                     .font(.subheadline)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -51,6 +81,11 @@ struct VehicleListView: View {
                 Menu {
                     Button("Edit") {
                         selectedVehicle = vehicle
+                        sheetType = .editVehicle(selectedVehicle!)
+                    }
+                    Button("New Ride") {
+                        selectedVehicle = vehicle
+                        sheetType = .newRide(selectedVehicle!)
                     }
                 } label: {
                     Image(systemName: "ellipsis")
@@ -61,9 +96,10 @@ struct VehicleListView: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(PlainButtonStyle())
-            }/*.onTapGesture {
+            }.onTapGesture {
                 selectedVehicle = vehicle
-            }*/
+                sheetType = .newRide(selectedVehicle!)
+            }
             .onAppear {
                 isAvailable(vehicle: vehicle) { isAvailable in
                     self.vehicleAvailability[vehicle.id!] = isAvailable
@@ -76,15 +112,18 @@ struct VehicleListView: View {
             }
             .padding()
         }
-        .sheet(item: $selectedVehicle) { vehicle in
-            VehicleFormView(viewModel: vehicleViewModel, vehicle: vehicle)
+        .sheet(item: $sheetType) { sheet in
+            switch sheet {
+            case .editVehicle(let vehicle):
+                VehicleFormView(viewModel: vehicleViewModel, vehicle: vehicle)
+            case .newRide(let vehicle):
+                RideFormView(rideViewModel: rideViewModel, customerViewModel: customerViewModel, vehicleViewModel: vehicleViewModel, vehicle: vehicle)
+            case .newVehicle:
+                VehicleFormView(viewModel: vehicleViewModel)
+            }
         }
         .onAppear {
             vehicleViewModel.fetchVehicles()
-        }
-        .onReceive(Timer.publish(every: 2, on: .main, in: .common).autoconnect()) { _ in
-            vehicleViewModel.fetchVehicles()
-            rideViewModel.fetchRides()
         }
     }
 }

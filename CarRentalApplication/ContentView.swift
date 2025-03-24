@@ -16,13 +16,13 @@ struct ContentView: View {
     var body: some View {
         NavigationSplitView {
             List {
-                /*NavigationLink(destination: RideCalendarView()) {
+                NavigationLink(destination: RideListView()) {
                     HStack {
                         Image(systemName: "calendar")
                             .frame(width: 24)
                         Text("Ride Calendar")
                     }
-                }*/
+                }
                 NavigationLink(destination: CustomerListView()) {
                     HStack {
                         Image(systemName: "person.3.fill")
@@ -35,6 +35,13 @@ struct ContentView: View {
                         Image(systemName: "car.2.fill")
                             .frame(width: 24)
                         Text("Vehicles")
+                    }
+                }
+                NavigationLink(destination: RideHistoryListView()) {
+                    HStack {
+                        Image(systemName: "archivebox.fill")
+                            .frame(width: 24)
+                        Text("Ride History")
                     }
                 }
             }

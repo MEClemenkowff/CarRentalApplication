@@ -15,23 +15,10 @@ struct VehicleFormView: View {
     
     @State private var make: String = ""
     @State private var model: String = ""
-    @State private var year: Int
+    @State private var year: Int = 0
     @State private var registration: String = ""
-    @State private var seats: Int
-    @State private var odometer: Int
-    
-    init(viewModel: VehicleViewModel, vehicle: Vehicle? = nil) {
-        self.viewModel = viewModel
-        self.vehicle = vehicle
-        
-        // Initialize state variables with vehicle data if editing
-        _make = State(initialValue: vehicle?.make ?? "")
-        _model = State(initialValue: vehicle?.model ?? "")
-        _year = State(initialValue: vehicle?.year ?? 0)
-        _registration = State(initialValue: vehicle?.registration ?? "")
-        _seats = State(initialValue: vehicle?.seats ?? 0)
-        _odometer = State(initialValue: vehicle?.odometer ?? 0)
-    }
+    @State private var seats: Int = 0
+    @State private var odometer: Int?
     
     var isFormValid: Bool {
         !make.isEmpty && !model.isEmpty && !registration.isEmpty
@@ -49,20 +36,33 @@ struct VehicleFormView: View {
                 Button {
                     if let vehicle = vehicle {
                         // Update existing vehicle
-                        viewModel.updateVehicle(id: vehicle.id!, make: make, model: model, year: year, registration: registration, seats: seats, odometer: odometer)
+                        viewModel.updateVehicle(id: vehicle.id!, make: make, model: model, year: year, registration: registration, seats: seats, odometer: odometer!)
                     } else {
                         // Add new vehicle
                         viewModel.addVehicle(make: make, model: model, year: year, registration: registration, seats: seats)
                     }
                     dismiss()
                 } label: {
-                    Text("Submit")
+                    Text("Save")
                 }.disabled(!isFormValid)
                 Button {
                     dismiss()
                 } label: {
                     Text("Cancel")
                 }
+            }
+        }
+        .onAppear {
+            viewModel.fetchVehicles()
+            
+            // If editing, set initial values
+            if let vehicle = vehicle {
+                make = vehicle.make
+                model = vehicle.model
+                year = vehicle.year
+                registration = vehicle.registration
+                seats = vehicle.seats
+                odometer = vehicle.odometer
             }
         }.padding()
     }
