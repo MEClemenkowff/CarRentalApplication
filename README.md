@@ -28,11 +28,11 @@ pip install -r requirements.txt
 
 #### Using MySQL
 
-When using the application with a MySQL database, make sure you can install `mysqlclient` ([https://pypi.org/project/mysqlclient/](https://pypi.org/project/mysqlclient/)), otherwise feel free to comment it out of `requirements.txt`.
+When using the application with a MySQL database, make sure you can install `mysqlclient` ([https://pypi.org/project/mysqlclient/](https://pypi.org/project/mysqlclient/)), otherwise feel free to comment it out of `requirements.txt`. To set up a new MySQL database, follow the instructions at ([https://dev.mysql.com/doc/mysql-getting-started/en/](https://dev.mysql.com/doc/mysql-getting-started/en/)).
 
 ### Setting up the database
 
-By default the application works with an auto-generated SQLite database. When using a MySQL or any other Django-compatible database change the `DATABASES` section in `car_rental/car_rental/settings.py`. After your database is set up, make and apply migrations:
+By default the application works with an auto-generated SQLite database. When using a MySQL or any other Django-compatible database, change the `DATABASES` section in `car_rental/car_rental/settings.py` by setting the `'default'` database accordingly (example included as a comment). After your database is set up, make and apply migrations:
 
 
 ```
